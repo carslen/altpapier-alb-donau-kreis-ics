@@ -19,3 +19,9 @@
 
 # Go workspace file
 go.work
+
+# ignore test data except of two
+test/data/*
+!test/data/abfuhrtermine-blaue-tonne-*-erbach.pdf
+!test/data/abfuhrtermine-blaue-tonne-*-berghuelen.pdf
+!test/data/abfuhrtermine-blaue-tonne-*-ulm.pdf
