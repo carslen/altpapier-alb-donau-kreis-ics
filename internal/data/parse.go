@@ -16,22 +16,26 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package main
+package data
 
 import (
-	"github.com/carslen/altpapier-alb-donau-kreis-ics/internal/data"
-	"github.com/carslen/altpapier-alb-donau-kreis-ics/internal/globals"
+	"bytes"
+
+	"github.com/ledongthuc/pdf"
 )
 
-func main() {
-	for _, v := range globals.Municipals() {
-		municipal := data.New()
-
-		if municipal.CheckAvailability(v) {
-			url, file := municipal.Metadata(v, data.NextYear())
-			municipal.Get(url, "", file)
-		}
-		url, file := municipal.Metadata(v, data.CurrentYear())
-		municipal.Get(url, "", file)
+func Parse(path string) (string, error) {
+	f, r, err := pdf.Open(path)
+	// remember close file
+	defer f.Close()
+	if err != nil {
+		return "", err
 	}
+	var buf bytes.Buffer
+	b, err := r.GetPlainText()
+	if err != nil {
+		return "", err
+	}
+	buf.ReadFrom(b)
+	return buf.String(), nil
 }
